@@ -1,10 +1,60 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text, TextBase, TextInput } from "react-native";
+import { Product } from "../components/Product";
 
 export function Home() {
+  const products = [
+    "Arroz",
+    "Feijão",
+    "Macarrão",
+    "Farinha de Trigo",
+    "Açúcar",
+    "Sal",
+    "Óleo de Soja",
+    "Leite",
+    "Ovos",
+    "Pão",
+    "Café",
+    "Chá",
+    "Manteiga",
+    "Queijo",
+    "Presunto",
+    "Frango",
+    "Carne Bovina",
+    "Peixe",
+    "Frutas",
+    "Legumes",
+    "Verduras",
+    "Batata",
+    "Cebola",
+    "Alho",
+    "Tomate",
+    "Cenoura",
+    "Banana",
+    "Maçã",
+    "Laranja",
+    "Uva",
+    "Refrigerante",
+    "Suco",
+    "Água Mineral",
+    "Biscoitos",
+    "Cereais",
+    "Molho de Tomate",
+    "Condimentos",
+    "Iogurte",
+    "Sorvete",
+    "Chocolate"
+  ];
   const handleProductAdd = () => {
-    console.log("Adicionei o produto");
+    if(products.includes("Arroz")){
+      Alert.alert("Produto já cadastrado", "Já existe um produto na lista com esse nome.");
+    }
+
   };
+
+  const handleProductRemove = (name: string) => {
+    console.log(`Produto removido! ${name}`);
+  }
 
   return (
     <View style={styles.container}>
@@ -23,9 +73,31 @@ export function Home() {
         </TouchableOpacity>
       </View>
       <Text style={styles.listTitle}>Compras Pendentes</Text>
-      <View style={styles.list}>
+
+      <FlatList
+        data={products}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <Product name={item} onRemove={() => handleProductRemove(item)} />
+        )}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={products.length <= 0 && styles.list}
+        ListEmptyComponent={() => (
+          <Text>
+            Comprou todos os produtos? Adicione produtos a sua lista de compras
+          </Text>
+        )}
+      />
+
+      {/*<ScrollView>
+        {
+         products.map((item) =>  <Product key={item} name = {item} onRemove={() =>handleProductRemove(item)} />)
+        }
+      </ScrollView>*/}
+
+      {/*<View style={styles.list}>
       <Text style={styles.listEmptyText}>Comprou todos os produtos? Adicione produtos a sua lista de compras!</Text>
-      </View>
+      </View>*/}
     </View>
 
   );
@@ -81,6 +153,7 @@ const styles = StyleSheet.create({
   listTitle:{
     fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 16,
   },
 
   listEmptyText: {
